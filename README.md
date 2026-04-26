@@ -13,7 +13,7 @@ Este proyecto implementa un pipeline de datos end-to-end para ingestar, replicar
 
 Flujo principal:
 
-`API (Yahoo Finance) -> PostgreSQL (landing) -> Airbyte -> ClickHouse (DWH) -> dbt -> Data Mart`
+`Yahoo Finance API → PostgreSQL (raw/landing) → Airbyte (EL) → ClickHouse (DWH) → dbt (staging + marts) → Data Mart`
 
 ---
 
@@ -135,6 +135,8 @@ docker compose ps
 ## 🔹 Instalacion de Airbyte (abctl)
 
 Este proyecto utiliza Airbyte en local mediante `abctl` (Airbyte CLI), lo que permite levantar la infraestructura completa sin depender de servicios SaaS.
+
+> ⚠️ Airbyte **no esta incluido en `docker-compose.yml`** y debe ejecutarse previamente mediante `abctl`. Asegurate de tener Airbyte corriendo antes de levantar el resto de los servicios.
 
 ### 1. Instalar `abctl`
 
@@ -258,6 +260,8 @@ Credenciales sugeridas:
 - usuario: `airflow`
 - password: `airflow`
 
+> ⚠️ Si el contenedor se recrea, puede ser necesario volver a ejecutar `airflow db init` y crear el usuario, ya que se usa SQLite sin persistencia.
+
 ---
 
 ## Componentes del Pipeline
@@ -330,11 +334,24 @@ El PDF incluye:
 
 ## Mejoras Futuras
 
-- Migrar metadatabase de Airflow a PostgreSQL
-- Parametrizar `connectionId` de Airbyte por variable de entorno
-- Agregar scheduling automatico del DAG
-- Incorporar CI/CD y pruebas automatizadas
-- Integrar observabilidad y alertas
+- Migrar la metadatabase de Airflow de SQLite a PostgreSQL.
+- Parametrizar el `connectionId` de Airbyte mediante variables de entorno.
+- Agregar scheduling automático al DAG de Airflow.
+- Incorporar CI/CD y pruebas automatizadas.
+- Integrar observabilidad, monitoreo y alertas.
+
+---
+
+## 🔁 Reproducibilidad
+
+El proyecto puede ejecutarse completamente en local siguiendo estos pasos:
+
+1. Configurar variables en `.env`
+2. Levantar servicios con Docker
+3. Configurar Airbyte (Source + Destination)
+4. Ejecutar DAG en Airflow
+
+No depende de servicios externos excepto la API de Yahoo Finance.
 
 ---
 
