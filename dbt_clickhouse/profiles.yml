@@ -1,0 +1,11 @@
+data_pipeline_clickhouse:
+  target: dev
+  outputs:
+    dev:
+      type: clickhouse
+      schema: dwh
+      host: clickhouse
+      port: 8123
+      user: default
+      password: "{{ env_var('CLICKHOUSE_PASSWORD') }}"
+      secure: false

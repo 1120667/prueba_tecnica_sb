@@ -1,0 +1,22 @@
+version: 2
+
+models:
+  - name: mart_stock_prices_monthly
+    description: "Resumen mensual por banco con precio promedio de apertura, cierre y volumen promedio."
+    columns:
+      - name: ticker
+        tests:
+          - not_null
+
+      - name: month
+        tests:
+          - not_null
+
+      - name: avg_open_price
+        description: "Precio promedio mensual de apertura."
+
+      - name: avg_close_price
+        description: "Precio promedio mensual de cierre."
+
+      - name: avg_volume
+        description: "Volumen promedio mensual."

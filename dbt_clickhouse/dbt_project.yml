@@ -1,0 +1,14 @@
+name: data_pipeline_clickhouse
+version: "1.0.0"
+config-version: 2
+
+profile: data_pipeline_clickhouse
+
+model-paths: ["models"]
+
+models:
+  data_pipeline_clickhouse:
+    staging:
+      +materialized: view
+    marts:
+      +materialized: table
